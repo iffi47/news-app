@@ -118,4 +118,26 @@ const authUser= async (req, res) =>{
     })
   }
 }
-module.exports= {registerUser, activeToken, authUser}
+
+const getUserProfile = async (req, res) =>{
+  const user= await User.findById(req.header._id)
+
+  if(user) {
+    res.status(200).json({
+      message:"User found successfully",
+      success: true,
+      data:{
+        _id:user.id,
+        name:user.name,
+        email:user.email,
+        avatar:user.avatar,
+      }
+    })
+  }else{
+    res.status(404).json({
+      success:false,
+      message:"User not found"
+    })
+  }
+}
+module.exports= {registerUser,getUserProfile, activeToken, authUser}
