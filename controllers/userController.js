@@ -140,4 +140,31 @@ const getUserProfile = async (req, res) =>{
     })
   }
 }
-module.exports= {registerUser,getUserProfile, activeToken, authUser}
+
+const updateProfile= async (req, res) => {
+  const user= await User.findById(req.header._id)
+
+  if(!user){
+    res.status(400).json({
+      message:"User not found",
+      success: false
+    })
+  }else{
+    user.name= req.body.name || user.name;
+    user.email= req.body.email || user.email;
+    user.avatar= req.body.avatar || user.avatar;
+  }
+  const updatedUser= await user.save();
+  res.status(200).json({
+    message:"User updated successfully",
+    success: true,
+    data:{
+    _id:updatedUser._id,
+    name:updatedUser.name,
+    email:updatedUser.email,
+    avatar:updatedUser.avatar,
+    token:generateToken(updatedUser._id)
+    }
+  })
+}
+module.exports= {registerUser,updateProfile,getUserProfile, activeToken, authUser}
