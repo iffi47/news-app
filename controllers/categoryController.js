@@ -133,3 +133,11 @@ const editCategory = async (res, req, next) =>{
     })
   }
 }
+
+module.exports={
+  addCategory,
+  getAllCategories,
+  getCategoriesByUserId,
+  deleteCategory,
+  editCategory
+}
