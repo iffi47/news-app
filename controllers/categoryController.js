@@ -3,7 +3,6 @@ const User= require("../models/UserModel")
 //this controller is for add category
 
 const addCategory = async (req, res) => {
-  console.log(req.body);
   const user = await User.findById(req.header._id)
   const { category_name, category_description } = req.body;
   try {
@@ -83,8 +82,10 @@ const getCategoriesByUserId = async (req, res, next) => {
 }
 
 const deleteCategory = async (req, res, next) => {
+  console.log(req.params);
   try {
-    const category = Category.findByIdAndDelete(req.params.catId)
+    const category = await Category.findByIdAndDelete(req.params.catId)
+    console.log();
     if (category) {
       res.status(201).json({
         message: "Data deleted successfully",
@@ -110,7 +111,7 @@ const deleteCategory = async (req, res, next) => {
 const editCategory = async (req, res, next) =>{
 
   try {
-    const category=Category.findByIdAndUpdate(req.params.catId, req.body,{
+    const category= await Category.findByIdAndUpdate(req.params.catId, req.body,{
       new: true,
       runValidators: true
     })
