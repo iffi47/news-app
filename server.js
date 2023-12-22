@@ -2,6 +2,7 @@ const express = require("express")
 const morgan= require("morgan")
 const connectDB= require("./config/db")
 const userRoute= require("./routes/userRoutes")
+const categoryRoute= require("./routes/categoryRoute")
 require('dotenv').config();
 require('colors');
 connectDB();
@@ -14,6 +15,7 @@ app.use(express.urlencoded({extended:false}));
 
 
 app.use('/api/users',userRoute)
+app.use('/api/categories',categoryRoute)
 app.get('*', function(req, res){
   console.log(req.body)
   console.log("Endpoint is working fine")

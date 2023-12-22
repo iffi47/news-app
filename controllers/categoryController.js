@@ -1,10 +1,11 @@
 const Category = require("../models/CategoryModel")
+const User= require("../models/UserModel")
 //this controller is for add category
 
-const addCategory = async (res, req) => {
+const addCategory = async (req, res) => {
+  const user = await User.findById(req.header._id)
+  const { category_name, category_description } = req.body;
   try {
-    const user = await User.findById(req.header._id)
-    const { category_name, category_description } = req.body;
     const category = await Category.findOne({ category_name: category_name })
     if (category) {
       res.status(401).json({
@@ -29,7 +30,7 @@ const addCategory = async (res, req) => {
   }
 }
 
-const getAllCategories = async (res, req, next) => {
+const getAllCategories = async (req, res, next) => {
 
   try {
     const categories = await Category.find({})
@@ -55,7 +56,7 @@ const getAllCategories = async (res, req, next) => {
 
 }
 
-const getCategoriesByUserId = async (res, req, next) => {
+const getCategoriesByUserId = async (req, res, next) => {
   try {
     const user = await User.findById(req.header._id)
     const categories = await Category.find({ userId: user._id })
@@ -80,9 +81,11 @@ const getCategoriesByUserId = async (res, req, next) => {
   }
 }
 
-const deleteCategory = async (res, req, next) => {
+const deleteCategory = async (req, res, next) => {
+  console.log(req.params);
   try {
-    const category = Category.findByIdAndDelete(req.params.catId)
+    const category = await Category.findByIdAndDelete(req.params.catId)
+    console.log();
     if (category) {
       res.status(201).json({
         message: "Data deleted successfully",
@@ -105,10 +108,10 @@ const deleteCategory = async (res, req, next) => {
 
 //Update Categories
 
-const editCategory = async (res, req, next) =>{
+const editCategory = async (req, res, next) =>{
 
   try {
-    const category=Category.findByIdAndUpdate(req.params.catId, req.body,{
+    const category= await Category.findByIdAndUpdate(req.params.catId, req.body,{
       new: true,
       runValidators: true
     })
@@ -132,4 +135,12 @@ const editCategory = async (res, req, next) =>{
       success: false
     })
   }
+}
+
+module.exports={
+  addCategory,
+  getAllCategories,
+  getCategoriesByUserId,
+  deleteCategory,
+  editCategory
 }
