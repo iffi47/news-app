@@ -198,8 +198,6 @@ const getNewsByCategoryId = async (req, res, next) => {
 const getNewsByUserId = async (req, res, next) => {
   const user = await User.findById(req.header._id)
   try {
-
-
     let { pageSize, pageNo } = req.query
     var query = {}
     if (pageNo < 0 || pageNo === 0) {
@@ -240,11 +238,34 @@ const getNewsByUserId = async (req, res, next) => {
   }
 }
 
+const deleteNews= async(req, res, next) => {
+  try {
+    const news = await News.findByIdAndDelete(req.params.newsId)
+    if (news) {
+      res.status(201).json({
+        message: "Data deleted successfully",
+        success: true
+
+      })
+    } else {
+      res.status(401).json({
+        message: "Your data is not correct",
+        success: false
+      })
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: "Internal server error occurred",
+      success: false
+    })
+  }
+}
 module.exports = {
   addNews,
   getAllNews,
   getNewsByUserId,
   getNewsByCategoryId,
   getSingleNews,
-  sliderNews
+  sliderNews,
+  deleteNews
 }
