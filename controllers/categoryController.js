@@ -82,7 +82,6 @@ const getCategoriesByUserId = async (req, res, next) => {
 }
 
 const deleteCategory = async (req, res, next) => {
-  console.log(req.params);
   try {
     const category = await Category.findByIdAndDelete(req.params.catId)
     console.log();
