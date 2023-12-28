@@ -38,6 +38,9 @@ const newsSchema = mongoose.Schema({
     type: Number,
     default: 0
   },
+  like:{
+    type: Number
+  },
   comments: [
     {
       user: {
@@ -47,12 +50,23 @@ const newsSchema = mongoose.Schema({
       comment: String
     }
   ],
+  timeToRead:{
+    type: String
+  },
   addToSlider: {
     type: Boolean,
     default: false
   },
   addedAt: {
     type: Date
+  },
+  updatedAt:{
+    type: Date,
+    default: Date.now()
+  },
+  notifyUser:{
+    type: Boolean,
+    default: false
   }
 })
 
